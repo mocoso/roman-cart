@@ -170,9 +170,8 @@ end
 
 config = YAML.load_file('config.yml')
 
-days = (ARGV[0] || config['default_number_of_days']).to_i
 to_date = Date.today
-from_date = to_date - days
+from_date = to_date - config['number_of_days'].to_i
 
 data_file_path = File.expand_path(config['download_to'])
 FileUtils.makedirs File.dirname(data_file_path)
