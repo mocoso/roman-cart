@@ -1,0 +1,7 @@
+login:
+  storeid:  12345
+  username: foo@bar.com
+  password: cryptic_stuff
+default_number_of_days: 7
+download_to: data.csv
+include_extra_data: true
