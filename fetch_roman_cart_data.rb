@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 
 # Run using ruby fetch_roman_cart_data.rb
 #
