@@ -5,13 +5,13 @@
 # Fetches last n days worth of roman cart data and saves as into ./data/data.csv
 require 'date'
 require 'tmpdir'
+require 'csv'
 
 begin
   require 'rubygems'
-  require 'fastercsv'
   require 'mechanize'
 rescue LoadError => e
-  puts "This script requires fastercsv and mechanize to be installed. Install with\n\n    gem install fastercsv mechanize\n"
+  puts "This script requires mechanize to be installed. Install with\n\n    gem install mechanize\n"
   exit
 end
 
@@ -108,7 +108,7 @@ class RomanCartSite
       Dir.new(tmp_data_directory_path).each do |name|
         path = File.join(tmp_data_directory_path, name)
         if File.file?(path) && File.extname(path) == '.csv'
-          csv = FasterCSV.read(path)
+          csv = CSV.read(path)
           case csv[0][1].strip
           when 'companyname'
             downloaded_data['sales'] = csv
@@ -129,7 +129,7 @@ class RomanCartSite
       sales_input = downloaded_data['sales'] || raise("unable to identify sales file")
       extra_data_input = downloaded_data['extra_data'] ||  raise("unable to identify extra data file")
 
-      FasterCSV.open(data_file_path, "w") do |csv|
+      CSV.open(data_file_path, "w") do |csv|
         items_input.each do |row|
           row = row.dup
           sales_id = row.shift.strip
