@@ -6,14 +6,7 @@
 require 'date'
 require 'tmpdir'
 require 'csv'
-
-begin
-  require 'rubygems'
-  require 'mechanize'
-rescue LoadError => e
-  puts "This script requires mechanize to be installed. Install with\n\n    gem install mechanize\n"
-  exit
-end
+require 'mechanize'
 
 class Array
   def pad(size, filler)
