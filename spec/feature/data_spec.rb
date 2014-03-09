@@ -10,7 +10,6 @@ describe 'fetching data' do
 
   let(:from_date) { Date.civil(2014, 1, 1) }
   let(:to_date) { Date.civil(2014, 1, 8) }
-  let(:include_extra_data) { true }
   let(:data_file_path) { 'spec_data.csv' }
   let(:store_id) { '11111' }
   let(:user_name) { 'joe@acme.test' }
@@ -67,7 +66,7 @@ describe 'fetching data' do
   def when_i_request_the_customer_data
     site = RomanCartSite.new
     site.login('storeid' => store_id, 'username' => user_name, 'password' => password)
-    site.download_data_export(from_date, to_date, data_file_path, include_extra_data)
+    site.download_data_export(from_date, to_date, data_file_path)
   end
 
   def then_i_get_the_data_as_a_single_csv

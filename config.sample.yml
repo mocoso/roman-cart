@@ -4,4 +4,3 @@ login:
   password: cryptic_stuff
 number_of_days: 7
 download_to: data.csv
-include_extra_data: true

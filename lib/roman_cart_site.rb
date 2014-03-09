@@ -16,14 +16,14 @@ class RomanCartSite
     @session_query_string = agent.history.last.uri.query
   end
 
-  def download_data_export(from_date, to_date, data_file_path, include_extra_data)
+  def download_data_export(from_date, to_date, data_file_path)
     export_form_page = agent.get("https://admin.romancart.com/v111/manage/salesman/exportsales.asp?#{session_query_string}")
 
     export_form = export_form_page.form_with(:name => 'expform')
     export_form.set_fields(
       :dateFrom   => from_date.strftime("%d-%b-%Y"),
       :dateTo     => to_date.strftime("%d-%b-%Y"),
-      :exporttype => (include_extra_data ? 3 : 1),
+      :exporttype => 3,
       :sdelimiter => 1
     )
 
@@ -55,14 +55,9 @@ class RomanCartSite
     tmp_data_directory_path = File.join(Dir.tmpdir, file_id)
     system "unzip -o #{tmp_zip_file} -d #{tmp_data_directory_path}"
 
-    if include_extra_data
-      puts "Combining data files"
-      downloaded_data = parse_download_data(tmp_data_directory_path)
-      generate_combined_data_csv(data_file_path, downloaded_data)
-    else
-      puts "Rename to #{data_file_path}"
-      FileUtils.mv(File.join(tmp_data_directory_path, "#{file_id}.csv"), data_file_path)
-    end
+    puts "Combining data files"
+    downloaded_data = parse_download_data(tmp_data_directory_path)
+    generate_combined_data_csv(data_file_path, downloaded_data)
 
     puts "Deleting #{tmp_data_directory_path}"
     system "rm -rf #{tmp_data_directory_path}"
