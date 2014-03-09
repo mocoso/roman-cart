@@ -2,6 +2,7 @@ require 'tmpdir'
 require 'csv'
 require 'mechanize'
 require 'array'
+require 'zip/zipfilesystem'
 
 class RomanCartSite
   def initialize
@@ -45,22 +46,12 @@ class RomanCartSite
     tmp_zip_file = ::File.join(Dir.tmpdir, 'data.zip')
     puts "Download zip to #{tmp_zip_file}"
 
-    # Extract name of file from href, which will later be the name of the first file within the zip
-    file_id = zip_link.href.split('/').last.split('.').first
-
     zip_file = zip_link.click
     zip_file.save_as tmp_zip_file
 
-    puts "Unzip #{tmp_zip_file}"
-    tmp_data_directory_path = File.join(Dir.tmpdir, file_id)
-    system "unzip -o #{tmp_zip_file} -d #{tmp_data_directory_path}"
-
     puts "Combining data files"
-    downloaded_data = parse_download_data(tmp_data_directory_path)
+    downloaded_data = parse_download_data(tmp_zip_file)
     generate_combined_data_csv(data_file_path, downloaded_data)
-
-    puts "Deleting #{tmp_data_directory_path}"
-    system "rm -rf #{tmp_data_directory_path}"
 
     puts "Delete #{tmp_zip_file}"
     system "rm #{tmp_zip_file}"
@@ -77,19 +68,23 @@ class RomanCartSite
     @agent
   end
 
-  def parse_download_data(tmp_data_directory_path)
-   downloaded_data = {}
-    Dir.glob("#{tmp_data_directory_path}/**/*.csv" ).each do |path|
-      csv = CSV.read(path)
-      case csv[0][1].strip
-      when 'companyname'
-        downloaded_data['sales'] = csv
-      when 'Extrafieldname'
-        downloaded_data['extra_data'] = csv
-      when 'itemcode'
-        downloaded_data['items'] = csv
-      else
-        raise "Unrecognised CSV file"
+  def parse_download_data(zip_file)
+    downloaded_data = {}
+    Zip::ZipFile.open(zip_file) do |files|
+      files.each do |file|
+        if file.name.match(/\.csv$/)
+          csv = CSV.parse(file.get_input_stream)
+          case csv[0][1].strip
+          when 'companyname'
+            downloaded_data['sales'] = csv
+          when 'Extrafieldname'
+            downloaded_data['extra_data'] = csv
+          when 'itemcode'
+            downloaded_data['items'] = csv
+          else
+            raise "Unrecognised CSV file"
+          end
+        end
       end
     end
     downloaded_data
