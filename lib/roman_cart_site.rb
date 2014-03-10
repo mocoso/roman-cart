@@ -6,7 +6,7 @@ require 'zip/zipfilesystem'
 
 class RomanCartSite
   def initialize
-    @agent = Mechanize.new
+    self.agent = Mechanize.new
   end
 
   def login(options)
@@ -14,7 +14,7 @@ class RomanCartSite
     login_form = login_page.form_with(:name => 'frmlogin')
     login_form.set_fields(options)
     agent.submit(login_form)
-    @session_query_string = agent.history.last.uri.query
+    self.session_query_string = agent.history.last.uri.query
   end
 
   def download_data_export(from_date, to_date, data_file_path)
@@ -60,13 +60,9 @@ class RomanCartSite
   private
   # This query appears to be part of the roman carts session info. Security
   # feature? Either way without it you get redirected back to the home page.
-  def session_query_string
-    @session_query_string
-  end
+  attr_accessor :session_query_string
 
-  def agent
-    @agent
-  end
+  attr_accessor :agent
 
   def parse_download_data(zip_file)
     downloaded_data = {}
