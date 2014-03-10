@@ -1,11 +1,21 @@
-require 'roman_cart_site'
+require_relative '../../web'
 require 'webmock/rspec'
+require 'rack/test'
+require 'timecop'
 
 describe 'fetching data' do
+  include Rack::Test::Methods
+
+  before { Timecop.freeze(Time.parse('1pm, 8th Jan, 2014')) }
+
+  def app
+    Sinatra::Application
+  end
+
   it 'fetches my data from roman cart' do
     given_a_stubbed_roman_cart_site
     when_i_request_the_customer_data
-    then_i_get_the_combined_data
+    then_i_get_the_combined_data_as_a_csv
   end
 
   let(:from_date) { Date.civil(2014, 1, 1) }
@@ -63,14 +73,12 @@ describe 'fetching data' do
   end
 
   def when_i_request_the_customer_data
-    site = RomanCartSite.new
-    site.login('storeid' => store_id, 'username' => user_name, 'password' => password)
-    @output_data = site.data_export(from_date, to_date)
+    @response = post('/export.csv', :user_name => user_name, :password => password, :store_id => store_id)
   end
 
-  def then_i_get_the_combined_data
-    reference_data = CSV.read('spec/data/sample_output.csv')
-    expect(@output_data).to eq(reference_data)
+  def then_i_get_the_combined_data_as_a_csv
+    reference_csv = CSV.read('spec/data/sample_output.csv')
+    expect(CSV.parse(@response.body)).to eq(reference_csv)
   end
 end
 
