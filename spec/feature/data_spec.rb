@@ -5,12 +5,11 @@ describe 'fetching data' do
   it 'fetches my data from roman cart' do
     given_a_stubbed_roman_cart_site
     when_i_request_the_customer_data
-    then_i_get_the_data_as_a_single_csv
+    then_i_get_the_combined_data
   end
 
   let(:from_date) { Date.civil(2014, 1, 1) }
   let(:to_date) { Date.civil(2014, 1, 8) }
-  let(:data_file_path) { 'spec_data.csv' }
   let(:store_id) { '11111' }
   let(:user_name) { 'joe@acme.test' }
   let(:password) { 'super-secret' }
@@ -66,13 +65,12 @@ describe 'fetching data' do
   def when_i_request_the_customer_data
     site = RomanCartSite.new
     site.login('storeid' => store_id, 'username' => user_name, 'password' => password)
-    site.download_data_export(from_date, to_date, data_file_path)
+    @output_data = site.data_export(from_date, to_date)
   end
 
-  def then_i_get_the_data_as_a_single_csv
-    output_csv = CSV.read(data_file_path)
-    reference_csv = CSV.read('spec/data/sample_output.csv')
-    expect(output_csv).to eq(reference_csv)
+  def then_i_get_the_combined_data
+    reference_data = CSV.read('spec/data/sample_output.csv')
+    expect(@output_data).to eq(reference_data)
   end
 end
 

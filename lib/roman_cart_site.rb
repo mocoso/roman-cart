@@ -15,7 +15,7 @@ class RomanCartSite
     self.session_query_string = agent.history.last.uri.query
   end
 
-  def download_data_export(from_date, to_date, data_file_path)
+  def data_export(from_date, to_date)
     export_form_page = agent.get("https://admin.romancart.com/v111/manage/salesman/exportsales.asp?#{session_query_string}")
 
     export_form = export_form_page.form_with(:name => 'expform')
@@ -48,11 +48,12 @@ class RomanCartSite
     zip_file.save_as tmp_zip_file
 
     puts "Combining data files"
-    csv = RomanCartExport.new(tmp_zip_file).csv
-    File.open(data_file_path, 'w') { |file| file.write(csv.to_s) }
+    data_export = RomanCartExport.new(tmp_zip_file).combined_data
 
     puts "Delete #{tmp_zip_file}"
     system "rm #{tmp_zip_file}"
+
+    data_export
   end
 
   private

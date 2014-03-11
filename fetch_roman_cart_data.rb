@@ -30,4 +30,6 @@ puts 'Login'
 site.login(config['login'])
 puts 'Logged in'
 
-site.download_data_export(from_date, to_date, data_file_path)
+export = site.data_export(from_date, to_date)
+File.open(data_file_path, 'w') { |file| file.write(CSV.new(export).to_s) }
+
