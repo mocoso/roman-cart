@@ -11,17 +11,21 @@ class RomanCartExport
     sales_csv || raise("unable to identify sales file")
     extra_csv || raise("unable to identify extra data file")
 
-    items_csv.map do |row|
-      row = row.dup
-      sales_id = row.shift.strip
-      puts "processing #{sales_id} for #{row[1]}"
-      row.pad(items_csv[0].size - 1, '')
-      sales_output_row(sales_csv, sales_id) + row + extra_data_output_row(extra_csv, sales_id)
+    items_csv.map do |item_row|
+      combined_row(item_row)
     end
   end
 
   private
   attr_accessor :items_csv, :sales_csv, :extra_csv
+
+  def combined_row(item_row)
+    item_row = item_row.dup
+    sales_id = item_row.shift.strip
+    puts "processing #{sales_id} for #{item_row[1]}"
+    item_row.pad(items_csv[0].size - 1, '')
+    sales_output_row(sales_csv, sales_id) + item_row + extra_data_output_row(extra_csv, sales_id)
+  end
 
   def parse_download_data(zip_file)
     Zip::ZipFile.open(zip_file) do |files|
