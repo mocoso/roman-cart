@@ -77,6 +77,7 @@ describe 'fetching data' do
   end
 
   def then_i_get_the_combined_data_as_a_csv
+    expect(@response.headers['Content-Type']).to eq('text/csv')
     reference_csv = CSV.read('spec/data/sample_output.csv')
     expect(CSV.parse(@response.body)).to eq(reference_csv)
   end
