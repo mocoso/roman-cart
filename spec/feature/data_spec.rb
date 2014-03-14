@@ -41,7 +41,11 @@ describe 'fetching data' do
       to_return(:status => 302, :body => "", :headers => { 'Location' => 'https://admin.romancart.com/v111/menu.asp?crx=foo&kxr=bar' })
 
     stub_request(:get, "https://admin.romancart.com/v111/menu.asp?crx=foo&kxr=bar").
-      to_return(:status => 200, :body => "", :headers => {})
+      to_return(
+        :status => 200,
+        :body => "<html><head><title>RomanCart - Logging in</title></head></html>",
+        :headers => { 'Content-Type' => 'text/html'}
+      )
 
     stub_request(:get, "https://admin.romancart.com/v111/manage/salesman/exportsales.asp?crx=foo&kxr=bar").
       to_return(
