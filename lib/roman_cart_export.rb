@@ -1,6 +1,6 @@
 require 'array'
 require 'csv'
-require 'zip/zipfilesystem'
+require 'zip'
 
 class RomanCartExport
   def initialize(zip_file)
@@ -28,10 +28,12 @@ class RomanCartExport
   end
 
   def parse_download_data(zip_file)
-    Zip::ZipFile.open(zip_file) do |files|
-      files.each do |file|
-        if file.name.match(/\.csv$/)
-          csv = CSV.parse(file.get_input_stream)
+    Zip::File.open(zip_file) do |zip|
+      zip.each do |entry|
+        if entry.name.match(/\.csv$/)
+          puts entry.name
+
+          csv = CSV.parse(entry.get_input_stream.read)
           case csv[0][1].strip
           when 'companyname'
             self.sales_csv = csv
