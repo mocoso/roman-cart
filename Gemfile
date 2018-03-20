@@ -8,7 +8,7 @@ gem 'mechanize'
 gem 'rubyzip'
 
 group :development do
-  gem 'webmock'
+  gem 'webmock', '>= 3.3.0'
   gem 'rspec'
   gem 'rack-test'
   gem 'timecop'
