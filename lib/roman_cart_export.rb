@@ -66,14 +66,20 @@ class RomanCartExport
 
   def extra_data_output_row(extra_data_input, sales_id)
     if sales_id_is_header_row?(sales_id)
-      ['Where did you first hear about Slug Rings?']
+      extra_data_header_row(extra_data_input)
     else
-      if extra_data_row = extra_data_input.detect { |r| r[0].strip == sales_id }
-        extra_data_row.slice(2, 1)
-      else
-        ['']
+      extra_data_header_row(extra_data_input).map do |header|
+        if extra_data_row = extra_data_input.detect { |r| r[0].strip == sales_id && r[1].strip == header }
+          extra_data_row[2]
+        else
+          ''
+        end
       end
     end
+  end
+
+  def extra_data_header_row(extra_data_input)
+    extra_data_input.map { |r| r[1] }.drop(1).compact.map { |c| c.strip }.uniq
   end
 end
 
