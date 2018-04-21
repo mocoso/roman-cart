@@ -11,7 +11,7 @@ class RomanCartSite
     login_page = agent.get('https://admin.romancart.com')
     login_form = login_page.form_with(:name => 'frmlogin')
     login_form.set_fields(options)
-    result_page = agent.submit(login_form)
+    result_page = agent.submit(login_form, login_form.button_with(:value => 'Log In'))
     unless result_page.title == 'RomanCart - Logging in'
       raise('Unable to log in')
     end

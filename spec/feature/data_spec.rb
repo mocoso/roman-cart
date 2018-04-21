@@ -32,6 +32,7 @@ describe 'fetching data' do
             <input type="text" name="storeid">
             <input type="text" name="username">
             <input type="password" name="password">
+            <input type="submit" value="Log In">
           <form>},
         :headers => { 'Content-Type' => 'text/html' }
       )
