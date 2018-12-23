@@ -5,6 +5,10 @@ require 'roman_cart_site'
 
 enable :logging
 
+get '/' do
+  'Reqests should be posted to export.csv'
+end
+
 post '/export.csv' do
   headers['Content-Type'] = 'text/csv'
 
