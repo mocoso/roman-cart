@@ -3,7 +3,10 @@ FROM ruby:2.5.3-alpine
 # Install apt based dependencies required to run Rails as 
 # well as RubyGems. As the Ruby image itself is based on a 
 # Debian image, we use apt-get to install those.
-RUN apk --update add build-base tzdata
+RUN apk --update add build-base tzdata npm
+
+RUN npm install -g try-thread-sleep
+RUN npm install -g serverless --ignore-scripts spawn-sync
 
 # Configure the main working directory. This is the base 
 # directory used in any further RUN, COPY, and ENTRYPOINT 
