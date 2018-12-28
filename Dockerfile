@@ -18,6 +18,9 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --jobs 20 --retry 5
 
+# Link AWS configuration to home directory
+RUN ln -s /app/.aws ~/.aws 
+
 # Copy the main application.
 COPY . ./
 
