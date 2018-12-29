@@ -53,6 +53,11 @@ package:
   exclude:
     - .git/**
     - .aws/**
+    - tags
+    - log/**
+    - spec
+    - Dockerfile
+    - docker-compose.yml
 
 functions:
   request:
