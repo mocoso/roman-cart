@@ -6,7 +6,7 @@ require 'timecop'
 describe 'fetching data' do
   include Rack::Test::Methods
 
-  before { Timecop.freeze(Time.parse('1pm, 8th Jan, 2014')) }
+  before { Timecop.freeze(Time.parse('1pm, 15th Jan, 2014')) }
 
   def app
     Sinatra::Application
@@ -19,7 +19,7 @@ describe 'fetching data' do
   end
 
   let(:from_date) { Date.civil(2014, 1, 1) }
-  let(:to_date) { Date.civil(2014, 1, 8) }
+  let(:to_date) { Date.civil(2014, 1, 15) }
   let(:store_id) { '11111' }
   let(:user_name) { 'joe@acme.test' }
   let(:password) { 'super-secret' }
@@ -70,7 +70,7 @@ describe 'fetching data' do
         :headers => { 'Content-Type' => 'text/html' }
       )
     stub_request(:post, "https://admin.romancart.com/v111/manage/salesman/exportsales.asp").
-      with(:body => {"crx"=>"foo&kxr=bar", "dateFrom"=>"01-Jan-2014", "dateTo"=>"08-Jan-2014", "dblquotes"=>"on", "exporttype"=>"3", "posted"=>"OK", "sdelimiter"=>"1"}).
+      with(:body => {"crx"=>"foo&kxr=bar", "dateFrom"=>"01-Jan-2014", "dateTo"=>"15-Jan-2014", "dblquotes"=>"on", "exporttype"=>"3", "posted"=>"OK", "sdelimiter"=>"1"}).
       to_return(:status => 200, :body => %q{Download <a href="34046uzqctgf66.zip">here</a>}, :headers => { 'Content-Type' => 'text/html' })
 
     stub_request(:get, "https://admin.romancart.com/v111/manage/salesman/34046uzqctgf66.zip").
