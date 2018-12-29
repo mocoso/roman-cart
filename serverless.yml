@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: myservice # NOTE: update this with your service name
+service: roman-cart # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
