@@ -1,10 +1,16 @@
 require_relative '../handler'
 
 describe 'hello' do
+  let(:event) { {
+    'headers' => {},
+    'httpMethod' => 'GET',
+    'path' => '/'
+  } }
+
   specify 'returns hello response' do
-    expect(hello(event: {}, context: {})).
+    expect(hello(event: event, context: {})).
       to eq ({
-        :body => '"Go Serverless v1.0! Your function executed successfully!"',
+        :body => 'Reqests should be posted to export.csv',
         :statusCode => 200
       })
   end
