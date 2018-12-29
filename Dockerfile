@@ -1,9 +1,12 @@
-FROM ruby:2.5.3-alpine
+FROM lambci/lambda:build-ruby2.5
 
-# Install apt based dependencies required to run Rails as 
-# well as RubyGems. As the Ruby image itself is based on a 
-# Debian image, we use apt-get to install those.
-RUN apk --update add build-base tzdata
+# Install node (which is not available as standard on ym
+RUN yum install -y gcc-c++ make
+RUN curl -sL https://rpm.nodesource.com/setup_6.x | sh -
+RUN yum install -y nodejs
+
+RUN npm install -g try-thread-sleep
+RUN npm install -g serverless --ignore-scripts spawn-sync
 
 # Configure the main working directory. This is the base 
 # directory used in any further RUN, COPY, and ENTRYPOINT 
@@ -17,6 +20,9 @@ WORKDIR /app
 # are made.
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --jobs 20 --retry 5
+
+# Link AWS configuration to home directory
+RUN ln -s /app/.aws ~/.aws 
 
 # Copy the main application.
 COPY . ./
