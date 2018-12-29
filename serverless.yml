@@ -66,6 +66,9 @@ functions:
       - http:
           path: /
           method: get
+      - http:
+          path: /export.csv
+          method: post
 
 plugins:
   - serverless-hooks-plugin
