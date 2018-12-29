@@ -1,6 +1,6 @@
-require_relative '../handler'
+require_relative '../lambda'
 
-describe 'hello' do
+describe 'request' do
   let(:event) { {
     'headers' => {},
     'httpMethod' => 'GET',
@@ -8,7 +8,7 @@ describe 'hello' do
   } }
 
   specify 'returns hello response' do
-    expect(hello(event: event, context: {})).
+    expect(request(event: event, context: {})).
       to eq ({
         :body => 'Reqests should be posted to export.csv',
         :statusCode => 200

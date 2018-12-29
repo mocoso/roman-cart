@@ -3,7 +3,7 @@ require 'rack'
 require 'base64'
 require_relative 'web'
 
-def hello(event:, context:)
+def request(event:, context:)
   # Check if the body is base64 encoded. If it is, try to decode it
   if event["isBase64Encoded"]
     body = Base64.decode64(event['body'])

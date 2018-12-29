@@ -55,8 +55,8 @@ package:
     - .aws/**
 
 functions:
-  hello:
-    handler: handler.hello
+  request:
+    handler: lambda.request
     events:
       - http:
           path: /
