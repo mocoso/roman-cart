@@ -12,10 +12,18 @@ describe 'fetching data' do
     Sinatra::Application
   end
 
-  it 'fetches my data from roman cart' do
+  it 'fetches my data from roman cart when there have been recent sales' do
     given_a_stubbed_roman_cart_site
+    and_recent_sales
     when_i_request_the_customer_data
     then_i_get_the_combined_data_as_a_csv
+  end
+
+  it 'fetches an empty csv from roman cart when there are no recent sales' do
+    given_a_stubbed_roman_cart_site
+    and_no_recent_sales
+    when_i_request_the_customer_data
+    then_i_get_an_empty_csv
   end
 
   let(:from_date) { Date.civil(2014, 1, 1) }
@@ -69,12 +77,21 @@ describe 'fetching data' do
         },
         :headers => { 'Content-Type' => 'text/html' }
       )
+  end
+
+  def and_recent_sales
     stub_request(:post, "https://admin.romancart.com/v111/manage/salesman/exportsales.asp").
       with(:body => {"crx"=>"foo&kxr=bar", "dateFrom"=>"01-Jan-2014", "dateTo"=>"15-Jan-2014", "dblquotes"=>"on", "exporttype"=>"3", "posted"=>"OK", "sdelimiter"=>"1"}).
       to_return(:status => 200, :body => %q{Download <a href="34046uzqctgf66.zip">here</a>}, :headers => { 'Content-Type' => 'text/html' })
 
     stub_request(:get, "https://admin.romancart.com/v111/manage/salesman/34046uzqctgf66.zip").
       to_return(:status => 200, :body => File.new('spec/data/sample_roman_cart_data.zip'), :headers => { 'Content-Type' => 'application/zip' })
+  end
+
+  def and_no_recent_sales
+    stub_request(:post, "https://admin.romancart.com/v111/manage/salesman/exportsales.asp").
+      with(:body => {"crx"=>"foo&kxr=bar", "dateFrom"=>"01-Jan-2014", "dateTo"=>"15-Jan-2014", "dblquotes"=>"on", "exporttype"=>"3", "posted"=>"OK", "sdelimiter"=>"1"}).
+      to_return(:status => 200, :body => %q{No link for data}, :headers => { 'Content-Type' => 'text/html' })
   end
 
   def when_i_request_the_customer_data
@@ -84,6 +101,12 @@ describe 'fetching data' do
   def then_i_get_the_combined_data_as_a_csv
     expect(@response.headers['Content-Type']).to eq('text/csv')
     reference_csv = CSV.read('spec/data/sample_output.csv')
+    expect(CSV.parse(@response.body)).to eq(reference_csv)
+  end
+
+  def then_i_get_an_empty_csv
+    expect(@response.headers['Content-Type']).to eq('text/csv')
+    reference_csv = []
     expect(CSV.parse(@response.body)).to eq(reference_csv)
   end
 end

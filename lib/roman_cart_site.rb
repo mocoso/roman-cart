@@ -41,22 +41,27 @@ class RomanCartSite
 
     zip_link = exported_page.links.detect{ |l| l.text == 'here' }
 
-    raise "Could not find file download link in response" unless zip_link
+    if zip_link
 
-    # GET data export file request -> getting the data
-    tmp_zip_file = ::File.join(Dir.tmpdir, 'data.zip')
-    puts "Download zip to #{tmp_zip_file}"
+      # GET data export file request -> getting the data
+      tmp_zip_file = ::File.join(Dir.tmpdir, 'data.zip')
+      puts "Download zip to #{tmp_zip_file}"
 
-    zip_file = zip_link.click
-    zip_file.save_as tmp_zip_file
+      zip_file = zip_link.click
+      zip_file.save_as tmp_zip_file
 
-    puts "Combining data files"
-    data_export = RomanCartExport.new(tmp_zip_file).combined_data
+      puts "Combining data files"
+      data_export = RomanCartExport.new(tmp_zip_file).combined_data
 
-    puts "Delete #{tmp_zip_file}"
-    system "rm #{tmp_zip_file}"
+      puts "Delete #{tmp_zip_file}"
+      system "rm #{tmp_zip_file}"
 
-    data_export
+      data_export
+    else
+
+      # There are no recent sales
+      CSV.new ''
+    end
   end
 
   private
