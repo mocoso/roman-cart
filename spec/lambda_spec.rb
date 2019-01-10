@@ -7,7 +7,7 @@ describe 'request' do
     'path' => '/'
   } }
 
-  specify 'returns hello response' do
+  specify 'returns successful http response' do
     expect(request(event: event, context: {})).
       to eq ({
         :body => 'Reqests should be posted to export.csv',
