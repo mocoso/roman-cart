@@ -28,5 +28,5 @@ $ bundle exec rake
 Run the following in the docker container
 
 ```bash
-$ bundle exex rake deploy
+$ bundle exec rake deploy
 ```
