@@ -7,11 +7,11 @@ gem 'mechanize'
 gem 'rubyzip'
 
 group :development do
-  gem 'thin'
   gem 'webmock', '>= 3.3.0'
   gem 'rspec'
   gem 'rake'
   gem 'rack-test'
+  gem 'rerun'
   gem 'timecop'
   gem 'pry'
 end

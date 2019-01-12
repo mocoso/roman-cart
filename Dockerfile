@@ -30,4 +30,4 @@ COPY . ./
 # The main command to run when the container starts. Also 
 # tell the Rails dev server to bind to all interfaces by 
 # default.
-CMD ["bundle", "exec", "thin", "start", "-R", "config.ru", "-p", "3043"]
+CMD ["bundle", "exec", "rerun", "--background", "rackup --host 0.0.0.0 -p 3043"]
