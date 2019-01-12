@@ -20,13 +20,13 @@ $ docker-compose up
 Step 3: Run tests on the docker container with
 
 ```bash
-$ bundle exec rake
+$ docker-compose app exec bundle exec rake
 ```
 
 ## Deployment
 
-Run the following in the docker container
+Run the following
 
 ```bash
-$ bundle exec rake deploy
+$ docker-compose app exec bundle exec rake deploy
 ```
