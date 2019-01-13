@@ -33,7 +33,9 @@ class RomanCartExport
         if entry.name.match(/\.csv$/)
           puts entry.name
 
-          csv = CSV.parse(entry.get_input_stream.read)
+          content = entry.get_input_stream.read.force_encoding('ISO-8859-1').encode('UTF-8')
+
+          csv = CSV.parse(content)
           case csv[0][1].strip
           when 'companyname'
             self.sales_csv = csv
