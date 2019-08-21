@@ -13,14 +13,13 @@ permissions to deploy to AWS Lambda.
 Step 2: Set up the docker container
 
 ```bash
-$ docker-compose build
-$ docker-compose up
+$ make
 ```
 
 Step 3: Run tests on the docker container with
 
 ```bash
-$ docker-compose app exec bundle exec rake
+$ make test
 ```
 
 ## Deployment
@@ -28,5 +27,5 @@ $ docker-compose app exec bundle exec rake
 Run the following
 
 ```bash
-$ docker-compose app exec bundle exec rake deploy
+$ make deploy
 ```
