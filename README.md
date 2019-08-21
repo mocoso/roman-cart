@@ -1,8 +1,8 @@
 # Roman Cart
 
 This is a little web app which enables you to export a single 'merged'
-CSV containing all the data that [Roman Cart](http://romancart.com) makes available in two
-separate CSV files.
+CSV containing all the data that [Roman Cart](http://romancart.com)
+makes available in two separate CSV files.
 
 ## Set up for development
 
