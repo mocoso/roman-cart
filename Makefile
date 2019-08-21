@@ -35,9 +35,12 @@ test: ## Run the tests
 smoke_test_dev: ## Ensure that the development environment is working
 	$(call smoke_test,http://localhost:3043)
 
+shell: ## Open a shell in the app container
+	docker-compose exec app bash
+
 clean: # Clean up
 	-docker-compose down
 	-docker rmi $(app_container_name)
 
-.PHONY: all help deploy build run test smoke_test_dev clean
+.PHONY: all help deploy build run test smoke_test_dev shell clean
 
