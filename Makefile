@@ -30,7 +30,7 @@ run: ## Run the app for local development
 
 test: ## Run the tests
 	$(info --> Run the tests)
-	docker-compose exec app bundle exec rake
+	docker-compose run app bundle exec rake
 	
 smoke_test_dev: ## Ensure that the development environment is working
 	$(call smoke_test,http://localhost:3043)
