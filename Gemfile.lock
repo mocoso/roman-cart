@@ -11,7 +11,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     ffi (1.11.1)
-    hashdiff (1.0.0)
+    hashdiff (1.0.1)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     listen (3.2.0)
@@ -42,7 +42,7 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    public_suffix (4.0.1)
+    public_suffix (4.0.5)
     rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
@@ -80,7 +80,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    webmock (3.7.6)
+    webmock (3.8.3)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
