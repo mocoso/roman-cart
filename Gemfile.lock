@@ -68,7 +68,7 @@ GEM
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
     ruby2_keywords (0.0.2)
-    rubyzip (2.0.0)
+    rubyzip (2.3.0)
     safe_yaml (1.0.5)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
